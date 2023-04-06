@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body onload="displayCookie()">
+<h1>Cookie Example</h1>
+<form>
+    <label for="username">Enter your name:</label>
+    <input type="text" id="username" name="username">
+    <input type="submit" value="Submit" onclick="setCookie()">
+</form>
+<p>Your name is: <span id="cookieValue"></span></p>
+<script>
+    function setCookie() {
+        var username = document.getElementById("username").value;
+        document.cookie = "username=" + username + "; expires=Thu, 01 Jan 2099 00:00:00 UTC";
+        alert("Cookie set!");
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function displayCookie() {
+        var username = getCookie("username");
+        if (username != "") {
+            document.getElementById("cookieValue").innerHTML = username;
+        } else {
+            document.getElementById("cookieValue").innerHTML = "unknown";
+        }
+    }
+</script>
+</body>
+</html>
