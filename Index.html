@@ -1,67 +1,47 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Cookie Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+    <script type="text/javascript">
+        function setCookie(c_name,value,exdays)
+        {
+            var exdate=new Date();
+            exdate.setDate(exdate.getDate() + exdays);
+            var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+            document.cookie=c_name + "=" + c_value;
         }
 
-        input[type="submit"] {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        function getCookie(c_name)
+        {
+            var i,x,y,ARRcookies=document.cookie.split(";");
+            for (i=0;i<ARRcookies.length;i++)
+            {
+                x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+                y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+                x=x.replace(/^\s+|\s+$/g,"");
+                if (x==c_name)
+                {
+                    return unescape(y);
+                }
+            }
         }
 
-        input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        function checkCookie()
+        {
+            var username=getCookie("username");
+            if (username!=null && username!="")
+            {
+                alert("Welcome again " + username);
+            }
+            else
+            {
+                username=prompt("Please enter your name:","");
+                if (username!=null && username!="")
+                {
+                    setCookie("username",username,365);
+                }
+            }
         }
-    </style>
+    </script>
 </head>
-<body onload="displayCookie()">
-<h1>Cookie Example</h1>
-<form>
-    <label for="username">Enter your name:</label>
-    <input type="text" id="username" name="username">
-    <input type="submit" value="Submit" onclick="setCookie()">
-</form>
-<p>Your name is: <span id="cookieValue"></span></p>
-<script>
-    function setCookie() {
-        var username = document.getElementById("username").value;
-        document.cookie = "username=" + username + "; expires=Thu, 01 Jan 2099 00:00:00 UTC";
-        alert("Cookie set!");
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function displayCookie() {
-        var username = getCookie("username");
-        if (username != "") {
-            document.getElementById("cookieValue").innerHTML = username;
-        } else {
-            document.getElementById("cookieValue").innerHTML = "unknown";
-        }
-    }
-</script>
+<body onload="checkCookie()">
 </body>
 </html>
